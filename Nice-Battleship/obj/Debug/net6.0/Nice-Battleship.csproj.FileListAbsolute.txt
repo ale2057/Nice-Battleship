@@ -1,0 +1,15 @@
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\bin\Debug\net6.0\Nice-Battleship.exe
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\bin\Debug\net6.0\Nice-Battleship.deps.json
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\bin\Debug\net6.0\Nice-Battleship.runtimeconfig.json
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\bin\Debug\net6.0\Nice-Battleship.dll
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\bin\Debug\net6.0\Nice-Battleship.pdb
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.csproj.AssemblyReference.cache
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.AssemblyInfoInputs.cache
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.AssemblyInfo.cs
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.csproj.CoreCompileInputs.cache
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.dll
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\refint\Nice-Battleship.dll
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.pdb
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\Nice-Battleship.genruntimeconfig.cache
+D:\DEVELOP\TAREA NICE\Nice-Battleship\Nice-Battleship\obj\Debug\net6.0\ref\Nice-Battleship.dll

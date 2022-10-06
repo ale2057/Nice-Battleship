@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Nice-Battleship/1.0.0": {
+        "runtime": {
+          "Nice-Battleship.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Nice-Battleship/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
