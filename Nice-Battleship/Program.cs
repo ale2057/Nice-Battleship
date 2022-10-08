@@ -1,7 +1,11 @@
-﻿internal class Program
+﻿using Nice_Battleship;
+
+
+internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        WorkFlow workFlow = new WorkFlow();
+        workFlow.start();
     }
 }
