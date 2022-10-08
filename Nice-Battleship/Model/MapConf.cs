@@ -10,12 +10,12 @@ namespace Nice_Battleship.Model
 {
     internal class MapConf
     {
-        public static void PrintMap(List<Position> positions, ShipConf Player1Shipconf, ShipConf Player2ShipConf, bool showEnemyShips)
+        public static void PrintMap(List<Position> positions, ShipConf Player1Shipconf, ShipConf Player2ShipConf, bool showPlayer2Ships, bool showPlayer1Ships)
         {
             PrintHeader();
             WriteLine();
-            if (!showEnemyShips)
-                showEnemyShips = Player1Shipconf.allSunk;
+            if (!showPlayer2Ships)
+                showPlayer2Ships = Player1Shipconf.allSunk;
 
             List<Position> SortedLFirePositions = positions.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
             List<Position> SortedShipsPositions = Player2ShipConf.shipCoordinates.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
@@ -74,7 +74,7 @@ namespace Nice_Battleship.Model
 
                         }
 
-                        if (jump && showEnemyShips && SortedShipsPositions.Count != 0 && SortedShipsPositions[EnemyshipCounter].x == x && SortedShipsPositions[EnemyshipCounter].y == y)
+                        if (jump && showPlayer2Ships && SortedShipsPositions.Count != 0 && SortedShipsPositions[EnemyshipCounter].x == x && SortedShipsPositions[EnemyshipCounter].y == y)
 
                         {
 
@@ -100,7 +100,7 @@ namespace Nice_Battleship.Model
                         {
                             ForegroundColor = ConsoleColor.Magenta;
                             Write("        |||        ");
-                            PrintPlayerMap(x, row, Player1Shipconf, Player2ShipConf, ref myShipCounter, ref enemyHitCounter, true);
+                            PrintPlayerMap(x, row, Player1Shipconf, Player2ShipConf, ref myShipCounter, ref enemyHitCounter, showPlayer1Ships);
                         }
                     }
 
@@ -161,7 +161,7 @@ namespace Nice_Battleship.Model
                         }
                         else
                         {
-                            ForegroundColor = ConsoleColor.Black;
+                            ForegroundColor = ConsoleColor.Blue;
                             Write("[X]");
                             jump = false;
                         }
@@ -199,7 +199,7 @@ namespace Nice_Battleship.Model
             }
         }
 
-        static void PrintHeader()
+        public static void PrintHeader()
         {
             ForegroundColor = ConsoleColor.Green;
             Write("[ ]|");
@@ -369,6 +369,49 @@ namespace Nice_Battleship.Model
             }
 
             return pos;
+        }
+
+        public static void Advertisements(ShipConf shipConf, bool isMyShip, PlayersSet playerSet)
+        {
+
+            string title = isMyShip ? playerSet.Player1.Name : playerSet.Player2.Name;
+
+
+            if (shipConf.checkCarrier && shipConf.carrierSunken)
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("{0} {1} is sink", title, nameof(shipConf.Carrier));
+                shipConf.checkCarrier = false;
+            }
+
+            if (shipConf.checkPBattleship && shipConf.battleshipSunken)
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("{0} {1} is sink", title, nameof(shipConf.Battleship));
+                shipConf.checkPBattleship = false;
+            }
+
+            if (shipConf.checkCruiser && shipConf.cruiserSunken)
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("{0} {1} is sink", title, nameof(shipConf.Cruiser));
+                shipConf.checkCruiser = false;
+            }
+
+            if (shipConf.checkSubmarine && shipConf.submarineSunken)
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("{0} {1} is sink", title, nameof(shipConf.Submarine));
+                shipConf.checkSubmarine = false;
+            }
+
+            if (shipConf.checkDestroyer && shipConf.destroyerSunken)
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("{0} {1} is sink", title, nameof(shipConf.Destroyer));
+                shipConf.checkDestroyer = false;
+            }
+
         }
     }
 }

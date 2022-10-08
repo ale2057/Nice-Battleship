@@ -16,7 +16,6 @@ namespace Nice_Battleship.Model
         private const int cruiser = 3; //board spaces 3
         private const int submarine = 3; //board spaces 3
         private const int destroyer = 2; //board spaces 2
-        public int stepsTaken { get; set; } = 0;
 
         public List<Position> Carrier { get; set; }//5
         public List<Position> Battleship { get; set; }//4
@@ -41,6 +40,16 @@ namespace Nice_Battleship.Model
         public bool checkSubmarine { get; set; } = true;
         public bool checkDestroyer { get; set; } = true;
 
+        public ShipConf(bool manual)
+        {
+
+            Carrier = GeneratePosistion(carrier, shipCoordinates, manual, "CARRIER");
+            Battleship = GeneratePosistion(battleship, shipCoordinates, manual, "BATTLESHIP");
+            Cruiser = GeneratePosistion(cruiser, shipCoordinates, manual, "CRUISER");
+            Submarine = GeneratePosistion(submarine, shipCoordinates, manual, "SUBMARINE");
+            Destroyer = GeneratePosistion(destroyer, shipCoordinates, manual, "DESTROYER");
+        }
+
         public List<Position> GeneratePosistion(int size, List<Position> AllPosition, bool Manual, string shipName)
         {
             List<Position> positions = new List<Position>();
@@ -51,12 +60,12 @@ namespace Nice_Battleship.Model
             {
                 if (Manual)
                 {
-                    positions = ManualPosition(size, shipName);
                     if (IsExist)
                     {
                         ForegroundColor = ConsoleColor.Red;
                         WriteLine("Location already taken");
                     }
+                    positions = ManualPosition(size, shipName);
                 }
                 else
                 {
@@ -64,8 +73,7 @@ namespace Nice_Battleship.Model
                 }
                 
                 IsExist = positions.Where(AP => AllPosition.Exists(ShipPos => ShipPos.x == AP.x && ShipPos.y == AP.y)).Any();
-            }
-            while (IsExist);
+            }while (IsExist);
             AllPosition.AddRange(positions);
             return positions;
         }
@@ -127,23 +135,12 @@ namespace Nice_Battleship.Model
             return positions;
         }
 
-        public ShipConf(bool manual)
-        {
-
-            Carrier = GeneratePosistion(carrier, shipCoordinates, manual,"CARRIER");
-            Battleship = GeneratePosistion(battleship, shipCoordinates, manual,"BATTLESHIP");
-            Cruiser = GeneratePosistion(cruiser, shipCoordinates, manual,"CRUISER");
-            Submarine = GeneratePosistion(submarine, shipCoordinates, manual,"SUBMARINE");
-            Destroyer = GeneratePosistion(destroyer, shipCoordinates, manual,"DESTROYER");
-        }
-
-
         public ShipConf CheckShipStatus(List<Position> HitPositions)
         {
 
             carrierSunken = Carrier.Where(C => !HitPositions.Any(H => C.x == H.x && C.y == H.y)).ToList().Count == 0;
             battleshipSunken = Battleship.Where(B => !HitPositions.Any(H => B.x == H.x && B.y == H.y)).ToList().Count == 0;
-            cruiserSunken = Destroyer.Where(D => !HitPositions.Any(H => D.x == H.x && D.y == H.y)).ToList().Count == 0;
+            cruiserSunken = Cruiser.Where(D => !HitPositions.Any(H => D.x == H.x && D.y == H.y)).ToList().Count == 0;
             submarineSunken = Submarine.Where(S => !HitPositions.Any(H => S.x == H.x && S.y == H.y)).ToList().Count == 0;
             destroyerSunken = Destroyer.Where(P => !HitPositions.Any(H => P.x == H.x && P.y == H.y)).ToList().Count == 0;
 
@@ -162,7 +159,9 @@ namespace Nice_Battleship.Model
             List<Position> positions = new List<Position>();
             do
             {
-                WriteLine("Input coordinate for <"+ shipName + "> (e.g. A3): ");
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("Input coordinate for <"+ shipName + "> (e.g. A1): ");
+                ForegroundColor = ConsoleColor.Blue;
                 cPos = ReadLine();
                 coorPos = MapConf.AnalyzeInput(cPos, dCoordinates);
                 if (coorPos.x == -1 || coorPos.y == -1)
@@ -170,7 +169,6 @@ namespace Nice_Battleship.Model
                     ForegroundColor = ConsoleColor.Red;
                     WriteLine("Invalid coordinates!");
                 }
-                WriteLine("x: "+coorPos.x+" y: "+coorPos.y);
                 ForegroundColor = ConsoleColor.Green;
             } while (coorPos.x == -1 || coorPos.y == -1);
             
@@ -180,11 +178,11 @@ namespace Nice_Battleship.Model
             do
             {
                 WriteLine("Direction Ship Horizontal(H), Vertical(V): ");
+                ForegroundColor = ConsoleColor.Blue;
                 pv = ReadLine();
             } while (pv.Trim() == "" || (pv.ToUpper() != "V" && pv.ToUpper() != "H"));
-
+            Clear();
             int direction = dPosition.GetValueOrDefault(Convert.ToChar(pv.ToUpper()));
-            WriteLine("Direccion: " + direction);
             if (direction % 2 != 0)
             {
                 if (row - size >= 0)

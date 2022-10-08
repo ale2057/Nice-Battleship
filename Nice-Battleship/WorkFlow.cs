@@ -14,20 +14,23 @@ namespace Nice_Battleship
         public void start()
         {
             Dictionary<char, bool> dResponse = DictionaryValues.PositionManual();
-            bool isShowShips = true;
             string pr = "";
             DrawWelcome();
             SetPlayersData();
             do
             {
-                WriteLine("Captain 1 "+ps.Player1.Name+" Place ships automatically?Y/N: ");
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("Captain 1 **"+ps.Player1.Name+" Place ships automatically?Y/N: ");
+                ForegroundColor = ConsoleColor.Blue;
                 pr = ReadLine();
             } while (pr.Trim() == "" || (pr.ToUpper() != "Y" && pr.ToUpper() != "N"));
             ShipConf player1Navys = new ShipConf(dResponse.GetValueOrDefault(Convert.ToChar(pr.ToUpper())));
             pr = "";
             do
             {
-                WriteLine("Captain 1 " + ps.Player2.Name + " Place ships automatically?Y/N: ");
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("Captain 2 **" + ps.Player2.Name + " Place ships automatically?Y/N: ");
+                ForegroundColor = ConsoleColor.Blue;
                 pr = ReadLine();
             } while (pr.Trim() == "" || (pr.ToUpper() != "Y" && pr.ToUpper() != "N"));
             ShipConf player2Navis = new ShipConf(dResponse.GetValueOrDefault(Convert.ToChar(pr.ToUpper())));
@@ -35,10 +38,11 @@ namespace Nice_Battleship
             DrawWelcome();
             GetPlayersData();
             MapConf.PrintSecondMapHeader();
-            MapConf.PrintMap(player1Navys.fireCoordinates, player1Navys, player2Navis, isShowShips);
+            MapConf.PrintMap(player1Navys.fireCoordinates, player1Navys, player2Navis, false, true);
+            ProcessGame(player1Navys, player2Navis);
         }
 
-       static void DrawWelcome()
+        static void DrawWelcome()
         {
             string s = ">>> BATTLESHIP GAME <<<";
             Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
@@ -56,7 +60,7 @@ namespace Nice_Battleship
             ForegroundColor = ConsoleColor.Green;
             string p1 = "", p2 = "";
             WriteEfect("Welcome to Battle ship game...\n");
-            WriteEfect("Please press any button to coninue...");
+            WriteEfect("Please press ENTER to continue...");
             ReadLine();
             do
             {
@@ -79,10 +83,10 @@ namespace Nice_Battleship
 
         public void GetPlayersData()
         {
-            string s = "Captain 1: " + ps.Player1.Name + "(wins: " + ps.Player1.Win + ")       Captain 2: " + ps.Player2.Name + "(" + ps.Player2.Win + ")";
+            string s = "Captain: " + ps.Player2.Name + "(wins: " + ps.Player2.Win + ")       Captain: " + ps.Player1.Name + "(wins: " + ps.Player1.Win + ")";
             ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
-            WriteLine(s);
+            WriteLine(s + "\n");
         }
 
         public void WriteEfect(string text)
@@ -91,6 +95,104 @@ namespace Nice_Battleship
             {
                 Write(text[i]);
                 Thread.Sleep(20);
+            }
+        }
+
+        void ProcessGame(ShipConf p1N, ShipConf p2N)
+        {
+            for (int round = 1; round < 101; round++)
+            {
+                Position position = new Position();
+
+                Dictionary<char, int> dCoordinates = CoordinatesValue.FillDictionary();
+                ForegroundColor = ConsoleColor.White;
+                WriteLine("Captain **"+ps.Player1.Name+" enter firing position (e.g. A1): ");
+                string input = ReadLine();
+                position = MapConf.AnalyzeInput(input, dCoordinates);
+
+                if (position.x == -1 || position.y == -1)
+                {
+                    WriteLine("Invalid coordinates!");
+                    round--;
+                    continue;
+                }
+
+                if (p1N.fireCoordinates.Any(EFP => EFP.x == position.x && EFP.y == position.y))
+                {
+                    WriteLine("This coordinate already being shot.");
+                    round--;
+                    continue;
+                }
+
+                var index = p1N.fireCoordinates.FindIndex(p => p.x == position.x && p.y == position.y);
+
+                if (index == -1)
+                    p1N.fireCoordinates.Add(position);
+
+                Clear();
+
+
+                p2N.shipCoordinates.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
+                p2N.CheckShipStatus(p1N.fireCoordinates);
+
+                DrawWelcome();
+                GetPlayersData();
+                MapConf.PrintSecondMapHeader();
+
+                MapConf.PrintMap(p1N.fireCoordinates, p1N, p2N, true, false);
+
+                MapConf.Advertisements(p1N, true, ps);
+                MapConf.Advertisements(p2N, false, ps);
+                if (p2N.allSunk || p1N.allSunk) { break; }
+
+                //TURN TO FIRE PLAYER 2
+
+
+
+                input = "";
+                ForegroundColor = ConsoleColor.White;
+                WriteLine("Captain **" + ps.Player2.Name + " enter firing position (e.g. A1): ");
+                input = ReadLine();
+                position = MapConf.AnalyzeInput(input, dCoordinates);
+
+
+
+                if (position.x == -1 || position.y == -1)
+                {
+                    WriteLine("Invalid coordinates!");
+                    round--;
+                    continue;
+                }
+
+                if (p2N.fireCoordinates.Any(EFP => EFP.x == position.x && EFP.y == position.y))
+                {
+                    WriteLine("This coordinate already being shot.");
+                    round--;
+                    continue;
+                }
+
+                var index2 = p2N.fireCoordinates.FindIndex(p => p.x == position.x && p.y == position.y);
+
+                if (index2 == -1)
+                    p2N.fireCoordinates.Add(position);
+
+                Clear();
+
+                
+
+                DrawWelcome();
+                GetPlayersData();
+                MapConf.PrintSecondMapHeader();
+
+                MapConf.PrintMap(p1N.fireCoordinates, p1N, p2N, false, true);
+
+                p1N.shipCoordinates.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
+                p1N.CheckShipStatus(p2N.fireCoordinates);
+
+                MapConf.Advertisements(p1N, true, ps);
+                MapConf.Advertisements(p2N, false, ps);
+                if (p2N.allSunk || p1N.allSunk) { break; }
+
             }
         }
        
