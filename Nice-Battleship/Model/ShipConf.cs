@@ -190,7 +190,7 @@ namespace Nice_Battleship.Model
                     for (int i = 0; i < size; i++)
                     {
                         Position pos = new Position();
-                        pos.x = row + i;
+                        pos.x = row - i;
                         pos.y = col;
                         positions.Add(pos);
                     }
@@ -200,7 +200,7 @@ namespace Nice_Battleship.Model
                     for (int i = 0; i < size; i++)
                     {
                         Position pos = new Position();
-                        pos.x = row - i;
+                        pos.x = row + i;
                         pos.y = col;
                         positions.Add(pos);
                     }
@@ -214,7 +214,7 @@ namespace Nice_Battleship.Model
                     {
                         Position pos = new Position();
                         pos.x = row;
-                        pos.y = col + i;
+                        pos.y = col - i;
                         positions.Add(pos);
                     }
                 }
@@ -224,9 +224,10 @@ namespace Nice_Battleship.Model
                     {
                         Position pos = new Position();
                         pos.x = row;
-                        pos.y = col - i;
+                        pos.y = col + i;
                         positions.Add(pos);
                     }
+                    
                 }
             }
             return positions;

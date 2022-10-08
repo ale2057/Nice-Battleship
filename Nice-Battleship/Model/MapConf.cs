@@ -68,7 +68,7 @@ namespace Nice_Battleship.Model
                             else
                             {
                                 ForegroundColor = ConsoleColor.Blue;
-                                Write("[X]");
+                                Write("[ ]");
                                 jump = false;
                             }
 
@@ -162,7 +162,7 @@ namespace Nice_Battleship.Model
                         else
                         {
                             ForegroundColor = ConsoleColor.Blue;
-                            Write("[X]");
+                            Write("[ ]");
                             jump = false;
                         }
 
@@ -380,35 +380,35 @@ namespace Nice_Battleship.Model
             if (shipConf.checkCarrier && shipConf.carrierSunken)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
-                WriteLine("{0} {1} is sink", title, nameof(shipConf.Carrier));
+                WriteLine("{0} {1} is sunken", title, nameof(shipConf.Carrier));
                 shipConf.checkCarrier = false;
             }
 
             if (shipConf.checkPBattleship && shipConf.battleshipSunken)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
-                WriteLine("{0} {1} is sink", title, nameof(shipConf.Battleship));
+                WriteLine("{0} {1} is sunken", title, nameof(shipConf.Battleship));
                 shipConf.checkPBattleship = false;
             }
 
             if (shipConf.checkCruiser && shipConf.cruiserSunken)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
-                WriteLine("{0} {1} is sink", title, nameof(shipConf.Cruiser));
+                WriteLine("{0} {1} is sunken", title, nameof(shipConf.Cruiser));
                 shipConf.checkCruiser = false;
             }
 
             if (shipConf.checkSubmarine && shipConf.submarineSunken)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
-                WriteLine("{0} {1} is sink", title, nameof(shipConf.Submarine));
+                WriteLine("{0} {1} is sunken", title, nameof(shipConf.Submarine));
                 shipConf.checkSubmarine = false;
             }
 
             if (shipConf.checkDestroyer && shipConf.destroyerSunken)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
-                WriteLine("{0} {1} is sink", title, nameof(shipConf.Destroyer));
+                WriteLine("{0} {1} is sunken", title, nameof(shipConf.Destroyer));
                 shipConf.checkDestroyer = false;
             }
 
