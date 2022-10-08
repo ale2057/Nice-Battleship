@@ -71,7 +71,7 @@ namespace Nice_Battleship
         {
             ForegroundColor = ConsoleColor.Green;
             string p1 = "", p2 = "";
-            WriteEfect("Welcome to Battle ship game...\n");
+            WriteEfect("Welcome to Battleship game...\n");
             WriteEfect("Please press ENTER to continue...");
             ReadLine();
 
@@ -131,6 +131,7 @@ namespace Nice_Battleship
 
                 if (position.x == -1 || position.y == -1)
                 {
+                    ForegroundColor = ConsoleColor.Red;
                     WriteLine("Invalid coordinates!");
                     round--;
                     continue;
@@ -138,6 +139,7 @@ namespace Nice_Battleship
 
                 if (p1N.fireCoordinates.Any(EFP => EFP.x == position.x && EFP.y == position.y))
                 {
+                    ForegroundColor = ConsoleColor.Red;
                     WriteLine("This coordinate already being shot.");
                     round--;
                     continue;
@@ -186,6 +188,7 @@ namespace Nice_Battleship
 
                     if (position.x == -1 || position.y == -1)
                     {
+                        ForegroundColor = ConsoleColor.Red;
                         WriteLine("Invalid coordinates!");
                         round--;
                         continue;
@@ -193,6 +196,7 @@ namespace Nice_Battleship
 
                     if (p2N.fireCoordinates.Any(EFP => EFP.x == position.x && EFP.y == position.y))
                     {
+                        ForegroundColor = ConsoleColor.Red;
                         WriteLine("This coordinate already being shot.");
                         round--;
                         continue;
