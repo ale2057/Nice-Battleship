@@ -71,7 +71,7 @@ namespace Nice_Battleship
         {
             ForegroundColor = ConsoleColor.Green;
             string p1 = "", p2 = "";
-            WriteEfect("Welcome to Battle ship game...\n");
+            WriteEfect("Welcome to Battleship game...\n");
             WriteEfect("Please press ENTER to continue...");
             ReadLine();
 
