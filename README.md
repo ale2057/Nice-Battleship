@@ -26,3 +26,6 @@ Boats
 
 Enter the link to download the executable:
 https://www.dropbox.com/sh/n388ittp0zc5ix3/AABp8Y5_P8h0UxiwC2PTii84a?dl=0
+
+IMPORTANT
+- Framework .Net6 is required
