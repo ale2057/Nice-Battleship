@@ -10,83 +10,89 @@ namespace Nice_Battleship
 {
     internal class WorkFlow
     {
+        PlayersSet ps= new PlayersSet() { Player1 = new Player(), Player2 = new Player() };
         public void start()
         {
-            bool isShowShips = false;//show enemy ships position
-            ShipConf player1Navys = new ShipConf();
-            ShipConf pcNavys = new ShipConf();
-            Dictionary<char, int> Coordinates = CoordinatesValue.FillDictionary();
-
-            PrintMap(player1Navys.fireCoordinates, player1Navys, pcNavys, isShowShips);
-            //DrawWelcome();
+            Dictionary<char, bool> dResponse = DictionaryValues.PositionManual();
+            bool isShowShips = true;
+            string pr = "";
+            DrawWelcome();
+            SetPlayersData();
+            do
+            {
+                WriteLine("Captain 1 "+ps.Player1.Name+" Place ships automatically?Y/N: ");
+                pr = ReadLine();
+            } while (pr.Trim() == "" || (pr.ToUpper() != "Y" && pr.ToUpper() != "N"));
+            ShipConf player1Navys = new ShipConf(dResponse.GetValueOrDefault(Convert.ToChar(pr.ToUpper())));
+            pr = "";
+            do
+            {
+                WriteLine("Captain 1 " + ps.Player2.Name + " Place ships automatically?Y/N: ");
+                pr = ReadLine();
+            } while (pr.Trim() == "" || (pr.ToUpper() != "Y" && pr.ToUpper() != "N"));
+            ShipConf player2Navis = new ShipConf(dResponse.GetValueOrDefault(Convert.ToChar(pr.ToUpper())));
+            Clear();
+            DrawWelcome();
+            GetPlayersData();
+            MapConf.PrintSecondMapHeader();
+            MapConf.PrintMap(player1Navys.fireCoordinates, player1Navys, player2Navis, isShowShips);
         }
 
        static void DrawWelcome()
         {
+            string s = ">>> BATTLESHIP GAME <<<";
+            Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
             ForegroundColor = ConsoleColor.Green;
             Write(">>> ");
             ForegroundColor = ConsoleColor.White;
             Write("BATTLESHIP GAME");
             ForegroundColor = ConsoleColor.Green;
-            Write(" <<<");
+            Write(" <<<\n\n");
             ForegroundColor = ConsoleColor.White;
         }
-        static void PrintMap(List<Position> positions, ShipConf Player1Shipconf, ShipConf PcNavyAssets, bool showEnemyShips)
+
+        public void SetPlayersData()
         {
-            
-            WriteLine();
-            if (!showEnemyShips)
-                showEnemyShips = Player1Shipconf.allSunk;
-
-            List<Position> SortedLFirePositions = positions.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
-            List<Position> SortedShipsPositions = PcNavyAssets.shipCoordinates.OrderBy(o => o.x).ThenBy(n => n.y).ToList();
-
-            SortedShipsPositions = SortedShipsPositions.Where(FP => !SortedLFirePositions.Exists(ShipPos => ShipPos.x == FP.x && ShipPos.y == FP.y)).ToList();
-
-            int row = 1;
-            try
+            ForegroundColor = ConsoleColor.Green;
+            string p1 = "", p2 = "";
+            WriteEfect("Welcome to Battle ship game...\n");
+            WriteEfect("Please press any button to coninue...");
+            ReadLine();
+            do
             {
-                for (int x = 1; x < 11; x++)
-                {
-                    for (int y = 1; y < 11; y++)
-                    {
-                        bool jump = true;
-
-                        #region row indicator
-                        if (y == 1)
-                        {
-                            if (row < 10) 
-                            { 
-                                Write("[" + row + "] ");
-                            }
-                            else
-                            {
-                                Write("[" + row + "]");
-                            }
-                            
-                            row++;
-                        }
-                        #endregion
-
-                        if (jump)
-                        {
-                            Write("[ ]");
-                        }
-
-                        if (y == 10)
-                        {
-                            Write("      ");
-                        }
-                    }
-
-                    WriteLine();
-                }
-
-            }
-            catch (Exception e)
+                WriteEfect("Input Captain 1 name: ");
+                ForegroundColor = ConsoleColor.Blue;
+                p1 = ReadLine();
+            } while (p1.Trim() == "");
+            ps.Player1.Name = p1;
+            ps.Player1.Win = 0;
+            do
             {
-                string error = e.Message.ToString();
+                ForegroundColor = ConsoleColor.Green;
+                WriteEfect("Input Captain 2 name: ");
+                ForegroundColor = ConsoleColor.Blue;
+                p2 = ReadLine();
+            } while (p2.Trim() == "");
+            ps.Player2.Name = p2;
+            ps.Player2.Win = 0;
+        }
+
+        public void GetPlayersData()
+        {
+            string s = "Captain 1: " + ps.Player1.Name + "(wins: " + ps.Player1.Win + ")       Captain 2: " + ps.Player2.Name + "(" + ps.Player2.Win + ")";
+            ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
+            WriteLine(s);
+        }
+
+        public void WriteEfect(string text)
+        {
+            for(int i=0; i < text.Length; i++)
+            {
+                Write(text[i]);
+                Thread.Sleep(20);
             }
         }
+       
     }
 }
